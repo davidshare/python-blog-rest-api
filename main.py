@@ -54,3 +54,11 @@ def create_post(post: Post):
   post_dict['id'] = randrange(0, 1000000 )
   my_posts.append(post.dict())
   return {"data": my_posts}
+
+@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id:int):
+  post = find_post(id)
+  if not post:
+    raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+  my_posts.pop(post['id'])
+  return {'message': 'post was deleted successfully'}
